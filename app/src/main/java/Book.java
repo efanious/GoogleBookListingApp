@@ -6,4 +6,11 @@ public class Book {
     public Book(String title){
         mTitle = title;
     }
+
+    /**
+     * Returns the title of the book
+     */
+    public String getTitle() {
+        return mTitle;
+    }
 }
