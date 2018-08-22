@@ -1,3 +1,5 @@
+package com.example.android.googlebooklistingapp;
+
 public class Book {
 
     /** Title of the book */

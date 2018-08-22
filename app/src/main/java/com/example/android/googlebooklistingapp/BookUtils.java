@@ -1,3 +1,5 @@
+package com.example.android.googlebooklistingapp;
+
 import android.util.Log;
 
 import java.io.BufferedReader;
