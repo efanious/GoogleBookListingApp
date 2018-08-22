@@ -1,6 +1,11 @@
 package com.example.android.googlebooklistingapp;
 
+import android.text.TextUtils;
 import android.util.Log;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -10,6 +15,8 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.example.android.googlebooklistingapp.BookActivity.LOG_TAG;
 
@@ -21,6 +28,63 @@ import static com.example.android.googlebooklistingapp.BookActivity.LOG_TAG;
 public final class BookUtils {
 
     private BookUtils() {
+    }
+
+    /**
+     * Return a list of {@link Book} objects that has been built up from
+     * parsing the given JSON response.
+     */
+    private static List<Book> extractFeatureFromJson(String bookJSON) {
+        // If the JSON string is empty or null, then return early.
+        if (TextUtils.isEmpty(bookJSON)) {
+            return null;
+        }
+
+        // Create an empty ArrayList that we can start adding books to
+        List<Book> books = new ArrayList<>();
+
+        // Try to parse the JSON response string. If there's a problem with the way the JSON
+        // is formatted, a JSONException exception object will be thrown.
+        // Catch the exception so the app doesn't crash, and print the error message to the logs.
+        try {
+
+            // Create a JSONObject from the JSON response string
+            JSONObject baseJsonResponse = new JSONObject(bookJSON);
+
+            // Extract the JSONArray associated with the key called "items",
+            // which represents a list of items (or books).
+            JSONArray bookArray = baseJsonResponse.getJSONArray("items");
+
+            // For each book in the bookArray, create a {@link Book} object
+            for (int i = 0; i < bookArray.length(); i++) {
+
+                // Get a single book at position i within the list of books
+                JSONObject currentBook = bookArray.getJSONObject(i);
+
+                // For a given book, extract the JSONObject associated with the
+                // key called "volumeInfo", which represents information about
+                // the title and authors of the book.
+                JSONObject volumeInfo = currentBook.getJSONObject("volumeInfo");
+
+                // Extract the value for the key called "title"
+                String title = volumeInfo.getString("title");
+
+                // Create a new {@link Book} object with the title from the JSON response.
+                Book book = new Book(title);
+
+                // Add the new {@link Book} to the list of books.
+                books.add(book);
+            }
+
+        } catch (JSONException e) {
+            // If an error is thrown when executing any of the above statements in the "try" block,
+            // catch the exception here, so the app doesn't crash. Print a log message
+            // with the message from the exception.
+            Log.e("BookUtils", "Problem parsing the earthquake JSON results", e);
+        }
+
+        // Return the list of books
+        return books;
     }
 
     /**
