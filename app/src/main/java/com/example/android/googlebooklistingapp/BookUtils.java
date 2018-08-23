@@ -88,6 +88,29 @@ public final class BookUtils {
     }
 
     /**
+     * Query the Google books dataset and return a list of {@link Book} objects.
+     */
+    public static List<Book> fetchBookData(String requestUrl) {
+
+        // Create URL object
+        URL url = createUrl(requestUrl);
+
+        // Perform HTTP request to the URL and receive a JSON response back
+        String jsonResponse = null;
+        try {
+            jsonResponse = makeHttpRequest(url);
+        } catch (IOException e) {
+            Log.e(LOG_TAG, "Problem making the HTTP request.", e);
+        }
+
+        // Extract relevant fields from the JSON response and create a list of {@link Books}s
+        List<Book> books = extractFeatureFromJson(jsonResponse);
+
+        // Return the list of {@link Books}s
+        return books;
+    }
+
+    /**
      * Returns new URL object from the given string URL.
      */
     private static URL createUrl(String stringUrl) {
