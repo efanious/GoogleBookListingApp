@@ -4,6 +4,7 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.widget.EditText;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -19,7 +20,7 @@ public class BookActivity extends AppCompatActivity
 
     /** URL for books data from the Googlebooks dataset */
     private static final String GOOGLEBOOKS_REQUEST_URL =
-            "https://www.googleapis.com/books/v1/volumes?q=cakes&maxResults=2";
+            "https://www.googleapis.com/books/v1/volumes?q=cars++&maxResults=12";
 
     private static final int EARTHQUAKE_LOADER_ID = 1;
 
