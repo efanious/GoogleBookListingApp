@@ -5,8 +5,12 @@ public class Book {
     /** Title of the book */
     private String mTitle;
 
-    public Book(String title){
+    /** Authors of the book */
+    private String mAuthor;
+
+    public Book(String title,String author){
         mTitle = title;
+        mAuthor = author;
     }
 
     /**
@@ -14,5 +18,12 @@ public class Book {
      */
     public String getTitle() {
         return mTitle;
+    }
+
+    /**
+     * Returns the authors of the book
+     */
+    public String getAuthor() {
+        return mAuthor;
     }
 }
