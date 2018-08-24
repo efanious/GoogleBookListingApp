@@ -10,9 +10,9 @@
 
 
     <EditText
-        android:layout_width="wrap_content"
+        android:id="@+id/search_topic"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Search for book "
         android:inputType="text"/>
 
     <Button
@@ -25,7 +25,7 @@
         android:id="@+id/list"
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="wrap_content" />
 
 
 </LinearLayout>

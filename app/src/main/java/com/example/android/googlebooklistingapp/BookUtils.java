@@ -16,6 +16,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static com.example.android.googlebooklistingapp.BookActivity.LOG_TAG;
@@ -69,8 +70,26 @@ public final class BookUtils {
                 // Extract the value for the key called "title"
                 String title = volumeInfo.getString("title");
 
+                // Extract the JSONArray associated with the key called "authors"
+                JSONArray authorsArray = volumeInfo.getJSONArray("authors");
+
+                //Create and array of authors
+                ArrayList<String> authorsArrayList = new ArrayList<>();
+
+                for (int b = 0;b < authorsArray.length(); b++){
+
+                    String authorName = authorsArray.getString(b);
+
+                    authorsArrayList.add(authorName);
+
+                }
+
+                // String of all the authors
+                String finalAuthor =  authorsArrayList.toString();
+
+
                 // Create a new {@link Book} object with the title from the JSON response.
-                Book book = new Book(title);
+                Book book = new Book(title,finalAuthor);
 
                 // Add the new {@link Book} to the list of books.
                 books.add(book);
