@@ -24,6 +24,10 @@ public class BookActivity extends AppCompatActivity
 
     private static final int EARTHQUAKE_LOADER_ID = 1;
 
+    //TODO 1 : The user can enter a word or phrase to serve as a search query. The app fetches book
+    // data related to the query via an HTTP request from the Google Books API, using a class such as
+    // HttpUriRequest or HttpURLConnection.
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
