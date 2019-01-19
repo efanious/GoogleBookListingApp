@@ -8,9 +8,13 @@ public class Book {
     /** Authors of the book */
     private String mAuthor;
 
-    public Book(String title,String author){
+    /** Thumbnail for the book image */
+    private String mThumbnail;
+
+    public Book(String title,String author, String thumbnail){
         mTitle = title;
         mAuthor = author;
+        mThumbnail = thumbnail;
     }
 
     /**
@@ -25,5 +29,10 @@ public class Book {
      */
     public String getAuthor() {
         return mAuthor;
+    }
+
+
+    public String getThumbnail() {
+        return mThumbnail;
     }
 }

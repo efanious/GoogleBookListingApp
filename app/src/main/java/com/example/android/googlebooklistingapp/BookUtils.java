@@ -87,9 +87,15 @@ public final class BookUtils {
                 // String of all the authors
                 String finalAuthor =  authorsArrayList.toString();
 
+                // Extract the JSONArray associated with the object called "imageLinks"
+                JSONObject imageLinks = volumeInfo.getJSONObject("imageLinks");
+
+                // Extract the value for the key called "smallThumbnail"
+                String smallThumbnail = imageLinks.getString("smallThumbnail");
+
 
                 // Create a new {@link Book} object with the title from the JSON response.
-                Book book = new Book(title,finalAuthor);
+                Book book = new Book(title,finalAuthor,smallThumbnail);
 
                 // Add the new {@link Book} to the list of books.
                 books.add(book);
