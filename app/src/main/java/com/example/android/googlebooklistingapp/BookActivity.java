@@ -78,20 +78,6 @@ public class BookActivity extends AppCompatActivity
 
     private void doMySearch(String query) {
 
-////        https://www.googleapis.com/books/v1/volumes?q=cars++&maxResults=12
-//
-//        searchQuery = query;
-//        Uri.Builder builder = new Uri.Builder();
-//        builder.scheme("https")
-//                .authority("www.googleapis.com")
-//                .appendPath("books")
-//                .appendPath("v1")
-//                .appendPath("volumes")
-//                .appendQueryParameter("q",searchQuery)
-//                .appendQueryParameter("maxResults","12");
-//
-//        String myUrl = builder.build().toString();
-//        newRequestUrl = myUrl;
         newRequestUrl =
                 "https://www.googleapis.com/books/v1/volumes?q=shoes++&maxResults=12";
 
