@@ -43,10 +43,10 @@ public class BookAdapter extends ArrayAdapter {
         // Display the authors of the current book in that TextView
         authorView.setText(currentBook.getAuthor());
 
-        // Find the TextView with ID thumbnail
-        TextView thumbnailView = (TextView) listItemView.findViewById(R.id.imagethumb);
-
-        thumbnailView.setText(currentBook.getThumbnail());
+//        // Find the TextView with ID thumbnail
+//        TextView thumbnailView = (TextView) listItemView.findViewById(R.id.imagethumb);
+//
+//        thumbnailView.setText(currentBook.getThumbnail());
 
 
         // Find the ImageView with ID thumbnail
