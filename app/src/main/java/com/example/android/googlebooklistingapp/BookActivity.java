@@ -1,10 +1,14 @@
 package com.example.android.googlebooklistingapp;
 
+import android.app.SearchManager;
+import android.content.Intent;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.widget.EditText;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -14,6 +18,7 @@ public class BookActivity extends AppCompatActivity
         implements LoaderManager.LoaderCallbacks<List<Book>>{
 
     /** Adapter for the list of books */
+
     private BookAdapter mAdapter;
 
     public static final String LOG_TAG = BookActivity.class.getName();
@@ -22,19 +27,32 @@ public class BookActivity extends AppCompatActivity
     private static final String GOOGLEBOOKS_REQUEST_URL =
             "https://www.googleapis.com/books/v1/volumes?q=cars++&maxResults=12";
 
-    private static final int EARTHQUAKE_LOADER_ID = 1;
+    private static final int BOOK_LOADER_ID = 1;
 
-    //TODO 1 : The user can enter a word or phrase to serve as a search query. The app fetches book
-    // data related to the query via an HTTP request from the Google Books API, using a class such as
-    // HttpUriRequest or HttpURLConnection.
+
+    private String searchQuery;
+
+    private String newRequestUrl =
+            "https://www.googleapis.com/books/v1/volumes?q=cars++&maxResults=12";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book);
 
+        // Get the intent, verify the action and get the query
+        Intent intent = getIntent();
+        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+            String query = intent.getStringExtra(SearchManager.QUERY);
+            doMySearch(query);
+        }
+
+
         // Find a reference to the {@link ListView} in the layout
         ListView bookListView = (ListView) findViewById(R.id.list);
+
+        View emptyView = findViewById(R.id.empty_view);
+        bookListView.setEmptyView(emptyView);
 
         // Create a new adapter that takes an empty list of books as input
         mAdapter = new BookAdapter(this, new ArrayList<Book>());
@@ -43,7 +61,57 @@ public class BookActivity extends AppCompatActivity
         // so the list can be populated in the user interface
         bookListView.setAdapter(mAdapter);
 
-        getSupportLoaderManager().initLoader(EARTHQUAKE_LOADER_ID, null, this);
+
+//        if (searchQuery == "" || searchQuery == null){
+//
+//        }else{
+//            getSupportLoaderManager().initLoader(BOOK_LOADER_ID, null, this);
+//        }
+
+        getSupportLoaderManager().initLoader(BOOK_LOADER_ID, null, this);
+
+
+
+    }
+
+    // Still struggling to make this thing work
+
+    private void doMySearch(String query) {
+
+////        https://www.googleapis.com/books/v1/volumes?q=cars++&maxResults=12
+//
+//        searchQuery = query;
+//        Uri.Builder builder = new Uri.Builder();
+//        builder.scheme("https")
+//                .authority("www.googleapis.com")
+//                .appendPath("books")
+//                .appendPath("v1")
+//                .appendPath("volumes")
+//                .appendQueryParameter("q",searchQuery)
+//                .appendQueryParameter("maxResults","12");
+//
+//        String myUrl = builder.build().toString();
+//        newRequestUrl = myUrl;
+        newRequestUrl =
+                "https://www.googleapis.com/books/v1/volumes?q=shoes++&maxResults=12";
+
+        // Find a reference to the {@link ListView} in the layout
+        ListView bookListView = (ListView) findViewById(R.id.list);
+
+        View emptyView = findViewById(R.id.empty_view);
+        bookListView.setEmptyView(emptyView);
+
+        // Create a new adapter that takes an empty list of books as input
+        mAdapter = new BookAdapter(this, new ArrayList<Book>());
+
+        // Set the adapter on the {@link ListView}
+        // so the list can be populated in the user interface
+        bookListView.setAdapter(mAdapter);
+
+        getSupportLoaderManager().initLoader(2, null, this);
+
+
+
 
     }
 
@@ -73,4 +141,26 @@ public class BookActivity extends AppCompatActivity
         mAdapter.clear();
 
     }
+
+    // Menu icons are inflated just as they were with actionbar
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_search:
+                onSearchRequested();
+                return true;
+
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+
+
 }
