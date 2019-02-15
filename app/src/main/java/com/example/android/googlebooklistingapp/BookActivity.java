@@ -1,150 +1,106 @@
 package com.example.android.googlebooklistingapp;
 
-import android.app.SearchManager;
-import android.content.Intent;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.Loader;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.ListView;
-
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BookActivity extends AppCompatActivity
-        implements LoaderManager.LoaderCallbacks<List<Book>>{
+public class BookActivity extends AppCompatActivity {
 
-    /** Adapter for the list of books */
-
-    private BookAdapter mAdapter;
-
+    private BookRecyclerAdapter mAdapter;
     public static final String LOG_TAG = BookActivity.class.getName();
 
     /** URL for books data from the Googlebooks dataset */
     private static final String GOOGLEBOOKS_REQUEST_URL =
             "https://www.googleapis.com/books/v1/volumes?q=cars++&maxResults=12";
 
-    private static final int BOOK_LOADER_ID = 1;
+    private RecyclerView mBookRecyclerView;
+    private ProgressBar loadingBar;
+    private TextView mErrorMessageDisplay;
+    private List<Book> booksLists;
 
-
-    private String searchQuery;
-
-    private String newRequestUrl =
-            "https://www.googleapis.com/books/v1/volumes?q=cars++&maxResults=12";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book);
 
-        // Get the intent, verify the action and get the query
-        Intent intent = getIntent();
-        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
-            String query = intent.getStringExtra(SearchManager.QUERY);
-            doMySearch(query);
+        mBookRecyclerView = (RecyclerView) findViewById(R.id.books_list);
+        loadingBar = (ProgressBar)findViewById(R.id.loading);
+
+        /* This TextView is used to display errors and will be hidden if there are no errors */
+        mErrorMessageDisplay = (TextView) findViewById(R.id.tv_error_message_display);
+
+        booksLists = new ArrayList<>();
+
+        LinearLayoutManager userLayoutManager = new LinearLayoutManager(this);
+
+        mBookRecyclerView.setLayoutManager(userLayoutManager);
+        mBookRecyclerView.setHasFixedSize(true);
+
+
+        mAdapter = new BookRecyclerAdapter(booksLists);
+        mBookRecyclerView.setAdapter(mAdapter);
+
+        loadUrlData();
+
+
+    }
+
+    private void loadUrlData() {
+        new FetchDataTask().execute(GOOGLEBOOKS_REQUEST_URL);
+    }
+
+    public class FetchDataTask extends AsyncTask<String, Void, List<Book>> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            loadingBar.setVisibility(View.VISIBLE);
         }
 
-
-        // Find a reference to the {@link ListView} in the layout
-        ListView bookListView = (ListView) findViewById(R.id.list);
-
-        View emptyView = findViewById(R.id.empty_view);
-        bookListView.setEmptyView(emptyView);
-
-        // Create a new adapter that takes an empty list of books as input
-        mAdapter = new BookAdapter(this, new ArrayList<Book>());
-
-        // Set the adapter on the {@link ListView}
-        // so the list can be populated in the user interface
-        bookListView.setAdapter(mAdapter);
+        @Override
+        protected List<Book> doInBackground(String... params) {
+            /* If there's no zip code, there's nothing to look up. */
+            if (params.length == 0) {
+                return null;
+            }
 
 
-//        if (searchQuery == "" || searchQuery == null){
-//
-//        }else{
-//            getSupportLoaderManager().initLoader(BOOK_LOADER_ID, null, this);
-//        }
+            String url = params[0];
 
-        getSupportLoaderManager().initLoader(BOOK_LOADER_ID, null, this);
+            if (url == null) {
+                return null;
+            }
 
+            // Perform the network request, parse the response, and extract a list of users.
+            List<Book> users = BookUtils.fetchBookData(url);
+            return users;
 
+        }
 
-    }
+        @Override
+        protected void onPostExecute(List<Book> bookData) {
+            loadingBar.setVisibility(View.INVISIBLE);
 
-    // Still struggling to make this thing work
-
-    private void doMySearch(String query) {
-
-        newRequestUrl =
-                "https://www.googleapis.com/books/v1/volumes?q=shoes++&maxResults=12";
-
-        // Find a reference to the {@link ListView} in the layout
-        ListView bookListView = (ListView) findViewById(R.id.list);
-
-        View emptyView = findViewById(R.id.empty_view);
-        bookListView.setEmptyView(emptyView);
-
-        // Create a new adapter that takes an empty list of books as input
-        mAdapter = new BookAdapter(this, new ArrayList<Book>());
-
-        // Set the adapter on the {@link ListView}
-        // so the list can be populated in the user interface
-        bookListView.setAdapter(mAdapter);
-
-        getSupportLoaderManager().initLoader(2, null, this);
-
-
-
-
-    }
-
-    @Override
-    public Loader<List<Book>> onCreateLoader(int id, Bundle args) {
-
-        return new BookLoader(BookActivity.this,GOOGLEBOOKS_REQUEST_URL);
-    }
-
-    @Override
-    public void onLoadFinished(Loader<List<Book>> loader, List<Book> data) {
-
-        // Clear the adapter of previous earthquake data
-        mAdapter.clear();
-
-        // If there is a valid list of {@link Book}s, then add them to the adapter's
-        // data set. This will trigger the ListView to update.
-        if (data != null && !data.isEmpty()) {
-
-            mAdapter.addAll(data);
+            if (bookData != null) {
+                mAdapter.setUserData(bookData);
+            } else {
+                showErrorMessage();
+            }
         }
     }
 
-    @Override
-    public void onLoaderReset(Loader<List<Book>> loader) {
-        // Loader reset, so we can clear out our existing data.
-        mAdapter.clear();
-
-    }
-
-    // Menu icons are inflated just as they were with actionbar
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_search:
-                onSearchRequested();
-                return true;
-
-        }
-        return super.onOptionsItemSelected(item);
+    private void showErrorMessage() {
+        mBookRecyclerView.setVisibility(View.INVISIBLE);
+        /* Then, show the error */
+        mErrorMessageDisplay.setVisibility(View.VISIBLE);
     }
 
 
