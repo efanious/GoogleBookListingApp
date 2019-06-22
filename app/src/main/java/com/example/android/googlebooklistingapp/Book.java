@@ -2,17 +2,33 @@ package com.example.android.googlebooklistingapp;
 
 public class Book {
 
-    /** Title of the book */
-    private String mTitle;
+    public String id;
+    public String title;
+    public String subTitle;
+    public String[] authors;
+    public String publisher;
+    public String publishedDate;
 
-    public Book(String title){
-        mTitle = title;
+    public Book(String id, String title, String subTitle, String[] authors, String publisher, String publishedDate) {
+        this.id = id;
+        this.title = title;
+        this.subTitle = subTitle;
+        this.authors = authors;
+        this.publisher = publisher;
+        this.publishedDate = publishedDate;
     }
 
-    /**
-     * Returns the title of the book
-     */
-    public String getTitle() {
-        return mTitle;
-    }
+    //    /** Title of the book */
+//    private String mTitle;
+//
+//    public Book(String title){
+//        mTitle = title;
+//    }
+//
+//    /**
+//     * Returns the title of the book
+//     */
+//    public String getTitle() {
+//        return mTitle;
+//    }
 }
