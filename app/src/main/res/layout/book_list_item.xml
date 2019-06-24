@@ -3,21 +3,84 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="?android:attr/listPreferredItemHeight"
+    android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:paddingEnd="16dp"
-    android:paddingLeft="16dp"
-    android:paddingRight="16dp"
-    android:paddingStart="16dp">
+    android:weightSum="100">
+    
+    <ImageView
+        android:id="@+id/bookDefaultImage"
+        android:layout_width="0dp"
+        android:layout_weight="15"
+        android:layout_height="match_parent"
+        android:padding="10dp"
+        android:src="@drawable/book_outline"
+        android:contentDescription="@string/default_book_image" />
 
-    <TextView
-        android:id="@+id/title"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_weight="85"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:fontFamily="sans-serif-medium"
-        android:gravity="center"
-        android:textSize="16sp"
-        tools:text="How to bake a cake" />
+        android:padding="8dp"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:text="Title of Book"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="20sp"
+            android:paddingLeft="@dimen/tv_padding"
+            android:paddingStart="@dimen/tv_padding"
+            android:paddingRight="0dp"
+            android:paddingEnd="0dp"/>
+
+        <TextView
+            android:id="@+id/tvAuthor"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:text="Author of Book"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="18sp"
+            android:paddingLeft="@dimen/tv_padding"
+            android:paddingStart="@dimen/tv_padding"
+            android:paddingRight="0dp"
+            android:paddingEnd="0dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="100">
+            <TextView
+                android:id="@+id/tvPublisher"
+                android:layout_width="0dp"
+                android:layout_weight="70"
+                android:layout_height="wrap_content"
+                tools:text="Publisher"
+                android:textAlignment="textStart"
+                android:layout_gravity="start"
+                android:paddingLeft="@dimen/tv_padding"
+                android:paddingStart="@dimen/tv_padding"
+                android:paddingRight="0dp"
+                android:paddingEnd="0dp"
+                />
+
+            <TextView
+                android:id="@+id/tvPublishedDate"
+                android:layout_width="0dp"
+                android:layout_weight="30"
+                android:layout_height="wrap_content"
+                android:textAlignment="textEnd"
+                android:layout_gravity="end"
+                android:paddingEnd="@dimen/tv_padding"
+                android:paddingRight="@dimen/tv_padding"
+                android:paddingLeft="0dp"
+                android:paddingStart="0dp"
+                tools:text="6/24/2019"/>
+        </LinearLayout>
+
+
+
+    </LinearLayout>
+
 
 </LinearLayout>

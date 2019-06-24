@@ -88,6 +88,7 @@ public final class ApiUtil {
         final String PUBLISHER = "publisher";
         final String PUBLISHED_DATE = "publishedDate";
         final String ITEMS = "items";
+        final String VOLUME_INFO = "volumeInfo";
 
         ArrayList<Book> books = null;
 
@@ -97,13 +98,31 @@ public final class ApiUtil {
             int numberOfBooks = arrayBooks.length();
             for (int i = 0; i < numberOfBooks; i++){
                 JSONObject bookJSON = arrayBooks.getJSONObject(i);
-                JSONObject volumeInfoJson = bookJSON.getJSONObject()
+                JSONObject volumeInfoJSON =
+                        bookJSON.getJSONObject(VOLUME_INFO);
+                int authorNum = volumeInfoJSON.getJSONArray(AUTHORS).length();
+                String[] authors = new String[authorNum];
+                for (int j = 0; j < authorNum; j++) {
+                    authors[j] = volumeInfoJSON.getJSONArray(AUTHORS).get(j).toString();
+                }
+
+                Book book = new Book(
+                        bookJSON.getString(ID),
+                        volumeInfoJSON.getString(TITLE),
+                        (volumeInfoJSON.isNull(SUBTITLE)?"":volumeInfoJSON.getString(SUBTITLE)),
+                        authors,
+                        volumeInfoJSON.getString(PUBLISHER),
+                        volumeInfoJSON.getString(PUBLISHED_DATE));
+
+                books.add(book);
+
             }
         }
         catch (JSONException e){
             e.printStackTrace();
         }
 
+        return books;
     }
 
 //    /**

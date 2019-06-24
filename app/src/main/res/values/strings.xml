@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Google Book Listing App</string>
+    <string name="default_book_image">Default Image</string>
 </resources>

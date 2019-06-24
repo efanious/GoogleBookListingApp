@@ -3,6 +3,7 @@ package com.example.android.googlebooklistingapp;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
@@ -15,10 +16,11 @@ import java.util.ArrayList;
 public class BookActivity extends AppCompatActivity {
 
     /** Adapter for the list of books */
-    private BookAdapter mAdapter;
+    private BooksAdapter mAdapter;
 
     public static final String LOG_TAG = BookActivity.class.getName();
     private ProgressBar mLoadingProgress;
+    private ListView bookListView;
 
 
     @Override
@@ -29,20 +31,21 @@ public class BookActivity extends AppCompatActivity {
 
         try {
             URL bookUrl = ApiUtil.buildUrl("Nigeria");
+            new BooksQueryTask().execute(bookUrl);
         }
         catch (Exception e) {
             Log.d("error", e.getMessage());
         }
 
-        // Find a reference to the {@link ListView} in the layout
-        ListView bookListView = (ListView) findViewById(R.id.list);
-
-        // Create a new adapter that takes an empty list of books as input
-        mAdapter = new BookAdapter(this, new ArrayList<Book>());
-
-        // Set the adapter on the {@link ListView}
-        // so the list can be populated in the user interface
-        bookListView.setAdapter(mAdapter);
+//        // Find a reference to the {@link ListView} in the layout
+//
+//
+//        // Create a new adapter that takes an empty list of books as input
+//        mAdapter = new BooksAdapter(this, new ArrayList<Book>());
+//
+//        // Set the adapter on the {@link ListView}
+//        // so the list can be populated in the user interface
+//        bookListView.setAdapter(mAdapter);
 
     }
 
@@ -64,7 +67,10 @@ public class BookActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String result) {
             mLoadingProgress.setVisibility(View.INVISIBLE);
-            super.onPostExecute(result);
+            ArrayList<Book> books = ApiUtil.getBooksFromJson(result);
+
+            mAdapter = new BooksAdapter(this,books) ;
+            bookListView = (ListView) findViewById(R.id.list);
         }
 
         @Override
