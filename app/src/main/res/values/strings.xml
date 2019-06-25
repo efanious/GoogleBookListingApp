@@ -1,4 +1,6 @@
 <resources>
     <string name="app_name">Google Book Listing App</string>
     <string name="default_book_image">Default Image</string>
+    <string name="error_loading_data">Error Loading data!!</string>
+    <string name="search">Search</string>
 </resources>

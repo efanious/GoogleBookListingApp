@@ -73,7 +73,7 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.BookViewHold
         }
     }
 
-//    public BooksAdapter(BookActivity.BooksQueryTask context, ArrayList<Book> books) {
+//    public BooksAdapter(BookListActivity.BooksQueryTask context, ArrayList<Book> books) {
 //        super(context, 0, books);
 //    }
 //
