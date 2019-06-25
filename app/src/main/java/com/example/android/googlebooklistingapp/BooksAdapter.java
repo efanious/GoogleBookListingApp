@@ -1,6 +1,7 @@
 package com.example.android.googlebooklistingapp;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -39,7 +40,7 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.BookViewHold
         return books.size();
     }
 
-    public class BookViewHolder extends RecyclerView.ViewHolder {
+    public class BookViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         TextView tvTitle;
         TextView tvAuthor;
@@ -53,51 +54,26 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.BookViewHold
             tvAuthor = (TextView) itemView.findViewById(R.id.tvAuthor);
             tvPublisher = (TextView) itemView.findViewById(R.id.tvPublisher);
             tvDate = (TextView) itemView.findViewById(R.id.tvPublishedDate);
+            itemView.setOnClickListener(this);
 
         }
 
         public void bind (Book book) {
             tvTitle.setText(book.title);
-            String authors = "";
-            int i = 0;
-            for (String author: book.authors) {
-                authors += author;
-                i++;
-                if (i < book.authors.length) {
-                    authors += ", ";
-                }
-            }
-            tvAuthor.setText(authors);
+            tvAuthor.setText(book.authors);
             tvDate.setText(book.publishedDate);
             tvPublisher.setText(book.publisher);
         }
+
+        @Override
+        public void onClick(View view) {
+            int position = getAdapterPosition();
+            Book selectedBook = books.get(position);
+            Intent intent = new Intent(view.getContext(), BookDetail.class);
+            intent.putExtra("Book", selectedBook);
+            view.getContext().startActivity(intent);
+
+        }
     }
 
-//    public BooksAdapter(BookListActivity.BooksQueryTask context, ArrayList<Book> books) {
-//        super(context, 0, books);
-//    }
-//
-//
-//    @Override
-//    public View getView(int position, View convertView, ViewGroup parent) {
-//        View listItemView = convertView;
-//
-//        if (listItemView == null) {
-//            listItemView = LayoutInflater.from(getContext()).inflate(
-//                    R.layout.book_list_item, parent, false);
-//        }
-//
-//        // Find the book at the given position in the list of books
-//        Book currentBook = (Book) getItem(position);
-//
-//        // Find the TextView with ID title
-//        TextView titleView = (TextView) listItemView.findViewById(R.id.title);
-//
-//        // Display the title of the current book in that TextView
-//        titleView.setText(currentBook.title);
-//
-//
-//        return listItemView;
-//
-//    }
 }

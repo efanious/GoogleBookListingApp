@@ -80,6 +80,7 @@ public final class ApiUtil {
         final String PUBLISHED_DATE = "publishedDate";
         final String ITEMS = "items";
         final String VOLUME_INFO = "volumeInfo";
+        final String DESCRIPTION = "description";
 
         ArrayList<Book> books = new ArrayList<Book>();
 
@@ -102,9 +103,10 @@ public final class ApiUtil {
                         bookJSON.getString(ID),
                         volumeInfoJSON.getString(TITLE),
                         (volumeInfoJSON.isNull(SUBTITLE)?"":volumeInfoJSON.getString(SUBTITLE)),
-                        authors,
+                        volumeInfoJSON.getString(AUTHORS),
                         volumeInfoJSON.getString(PUBLISHER),
-                        volumeInfoJSON.getString(PUBLISHED_DATE));
+                        volumeInfoJSON.getString(PUBLISHED_DATE),
+                        volumeInfoJSON.getString(DESCRIPTION));
 
                 books.add(book);
 
