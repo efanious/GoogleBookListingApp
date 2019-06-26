@@ -1,8 +1,12 @@
 package com.example.android.googlebooklistingapp;
 
+import android.databinding.BindingAdapter;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.text.TextUtils;
+import android.widget.ImageView;
+
+import com.squareup.picasso.Picasso;
 
 import java.util.Collections;
 
@@ -15,16 +19,17 @@ public class Book implements Parcelable {
     public String publisher;
     public String publishedDate;
     public String description;
+    public String thumbnail;
 
     public Book(String id, String title, String subTitle, String authors, String publisher,
-                String publishedDate, String description) {
+                String publishedDate, String description, String thumbnail) {
         this.id = id;
         this.title = title;
         this.subTitle = subTitle;
         this.authors = TextUtils.join(", ", Collections.singleton(authors));
         this.publisher = publisher;
         this.publishedDate = publishedDate;
-        this.description = description;
+        this.thumbnail = thumbnail;
     }
 
     protected Book(Parcel in) {
@@ -35,6 +40,7 @@ public class Book implements Parcelable {
         publisher = in.readString();
         publishedDate = in.readString();
         description = in.readString();
+        thumbnail = in.readString();
 
     }
 
@@ -64,5 +70,13 @@ public class Book implements Parcelable {
         parcel.writeString(publisher);
         parcel.writeString(publishedDate);
         parcel.writeString(description);
+        parcel.writeString(thumbnail);
+    }
+
+    @BindingAdapter({"android:imageUrl"})
+    public static void loadImage(ImageView view, String imageUrl) {
+        Picasso.get().load(imageUrl)
+                .placeholder(R.drawable.book_outline)
+                .into(view);
     }
 }
