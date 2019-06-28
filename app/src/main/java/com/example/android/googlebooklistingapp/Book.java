@@ -8,7 +8,7 @@ import android.widget.ImageView;
 
 import com.squareup.picasso.Picasso;
 
-import java.util.Collections;
+
 
 public class Book implements Parcelable {
 
@@ -21,14 +21,15 @@ public class Book implements Parcelable {
     public String description;
     public String thumbnail;
 
-    public Book(String id, String title, String subTitle, String authors, String publisher,
+    public Book(String id, String title, String subTitle, String[] authors, String publisher,
                 String publishedDate, String description, String thumbnail) {
         this.id = id;
         this.title = title;
         this.subTitle = subTitle;
-        this.authors = TextUtils.join(", ", Collections.singleton(authors));
+        this.authors = TextUtils.join(", ", authors);
         this.publisher = publisher;
         this.publishedDate = publishedDate;
+        this.description = description;
         this.thumbnail = thumbnail;
     }
 
