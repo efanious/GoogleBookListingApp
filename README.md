@@ -7,4 +7,4 @@ A book listing application. This app is very simple to use. You type a title for
 
 # Screenshots
 
-![](images/you-picture.png)
+![](screenshots/Screenshot_20190806-080610_Google Book Listing App.jpg)
