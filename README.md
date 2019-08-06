@@ -7,4 +7,7 @@ A book listing application. This app is very simple to use. You type a title for
 
 # Screenshots
 
-![](screenshots/Screenshot_20190806-080610_Google Book Listing App.jpg)
+Main Screen           |  Detail Activity               |  Advanced search page
+:-------------------------:|:-------------------------:|:-------------------------:
+![](screenshots/Screenshot_20190806-080610_GoogleBookListingApp.jpg) |  ![](screenshots/Screenshot_20190806-080613_GoogleBookListingApp.jpg) | ![](screenshots/Screenshot_20190806-080623_GoogleBookListingApp.jpg)
+
